@@ -3,12 +3,16 @@ _ = require('lodash');
  Faker = require('faker');
 
 const Conn = new Sequelize(
+  /*'tutorial',
   'tutorial',
-  'tutorial',
-  'tutorial',
+  'tutorial',*/
+  'postgres',
+  'postgres',
+  'postgres',
   {
     dialect: 'postgres',
-    host: '127.0.0.1'
+    //host: '127.0.0.1'
+    host: 'db',
   }
 );
 
