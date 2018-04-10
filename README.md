@@ -15,10 +15,73 @@ After getting ready the generated code for the models, proceed with the server s
 Clone the repository and run:
 ```
 $ npm install
+$ node_modules/.bin/sequelize db:migrate
 $ node server.js
 ```
+
+``` $ node_modules/.bin/sequelize db:migrate ``` command will create the tables specified in the ```migrations``` folder.
+With credential as in ``` config/config.json``` file.
 
 ## Example of use
 If you followed the example for generating the code described [here](https://github.com/vsuaste/express_graphql_model_gen), you can try the next queries and mutations. Otherwise, just adapt the same queries and mutations for your own models generated.
 
+We will add the next 4 people to our table ``people``.
 
+| Name (firstName) | Lastname (lastName) | Email (email) |
+| --- | --- | --- |
+| Albert | Einstein | albert.einstein@science.com |
+| Thomas | Edison | thomas.edison@science.com |
+| Vicent | van Gogh | vicent.vanGogh@art.com |
+| Ludwig | Beethoven  | ludwing.beethoven@art.com |
+
+#### CREATE PERSON 
+
+```
+curl -XPOST http://localhost:3000/graphql -H 'Content-Type: application/graphql' -d 'mutation M { addPerson(firstName: "Albert", lastName: "Einstein", email: "albert.einstein@science.com"){ firstName email } }'
+```
+As result we will get `firsName` and `email` of the person just created: 
+```
+{
+  "data": {
+    "addPerson": {
+      "firstName": "Albert",
+      "email": "albert.einstein@science.com"
+    }
+  }
+}
+```
+In the same way we add the next 3 people:
+
+```
+curl -XPOST http://localhost:3000/graphql -H 'Content-Type: application/graphql' -d 'mutation M { addPerson(firstName: "Thomas", lastName: "Edison", email: "thomas.edison@science.com") { firstName email } }'
+
+curl -XPOST http://localhost:3000/graphql -H 'Content-Type: application/graphql' -d 'mutation M { addPerson(firstName: "Vicent", lastName: "van Gogh", email: "vicent.vanGogh@art.com"){ firstName email } }'
+
+curl -XPOST http://localhost:3000/graphql -H 'Content-Type: application/graphql' -d 'mutation M { addPerson(firstName: "Ludwig", lastName: "Beethoven", email: "ludwig.beethoven@art.com"){ firstName email } }'
+```
+
+#### SEARCH PEOPLE WITH FILTER
+
+We'll search people with 'science' as substring of their email and as result we'll get only their name and last name.
+
+```
+curl -XPOST http://localhost:3000/graphql -H 'Content-Type: application/graphql' -d '{ searchPerson(input:{field:email, value:{value:"%science%"}, operator:like}){ firstName lastName}}'
+```
+The result will be:
+
+```
+{
+  "data": {
+    "searchPerson": [
+      {
+        "firstName": "Albert",
+        "lastName": "Einstein"
+      },
+      {
+        "firstName": "Thomas",
+        "lastName": "Edison"
+      }
+    ]
+  }
+}
+```
