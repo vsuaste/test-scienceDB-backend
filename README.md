@@ -14,8 +14,8 @@ After getting ready the generated code for the models, proceed with the server s
 ## Set up
 Clone the repository and run:
 ```
-npm install
-node server.js
+$ npm install
+$ node server.js
 ```
 
 ## Example of use
