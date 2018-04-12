@@ -9,7 +9,6 @@ const operatorsAliases = {
   $in: Op.in
 };
 
-//const Conn = new Sequelize(
 sequelize = new Sequelize(
   'test_code_gen',
   'test_code_gen',
@@ -22,5 +21,3 @@ sequelize = new Sequelize(
 );
 
 module.exports = sequelize;
-
-//module.exports.connection = Conn;
