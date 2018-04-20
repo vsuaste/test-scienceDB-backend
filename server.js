@@ -15,6 +15,10 @@
    /* set authorization rules from file acl_rules.js */
    acl.allow(aclRules);
    console.log("Authoization rules set!");
+
+   /*For testing purposes*/
+   acl.addUserRoles(1, 'guest');
+   acl.addUserRoles(2, 'administrator');
 }else{
   console.log("Open server, no authorization rules");
 }
