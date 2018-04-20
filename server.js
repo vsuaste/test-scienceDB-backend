@@ -3,17 +3,21 @@
  var graphqlHTTP = require('express-graphql');
  var {buildSchema} = require('graphql');
  var mergeSchema = require('./utils/merge-schemas');
+ var acl = null;
 
- var node_acl = require('acl');
- var {aclRules} = require('./acl_rules');
- var acl = new node_acl(new node_acl.memoryBackend());
+ /* Temporary solution:  acl rules set */
+ if(process.argv.length > 2 && process.argv[2]=='acl')
+ {
+   var node_acl = require('acl');
+   var {aclRules} = require('./acl_rules');
+   var acl = new node_acl(new node_acl.memoryBackend());
 
-
- /* set authorization rules from file acl_rules.js */
- acl.allow(aclRules);
-
- /* relationships */
- //require('./models/relationships');
+   /* set authorization rules from file acl_rules.js */
+   acl.allow(aclRules);
+   console.log("Authoization rules set!");
+}else{
+  console.log("Open server, no authorization rules");
+}
 
  /* Schema */
 var merged_schema = mergeSchema( path.join(__dirname, './schemas'));
@@ -26,7 +30,7 @@ var resolvers = require('./resolvers/index');
  const APP_PORT = 3000;
  const app = express();
 
- //request is passed as context by default
+ /*request is passed as context by default */
  app.use('/graphql', graphqlHTTP((req)=> ({
    schema: Schema,
    rootValue: resolvers,
