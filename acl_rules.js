@@ -10,7 +10,7 @@ module.exports = {
     roles: 'guest',
     allows: [{
       resources: ['dogs', 'people'],
-      permissions: 'get'
+      permissions: 'read'
     }]
   }]
 }
