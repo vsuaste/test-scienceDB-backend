@@ -1,6 +1,7 @@
  var express = require('express');
  var path = require('path');
  var graphqlHTTP = require('express-graphql');
+ const fileUpload = require('express-fileupload');
  var {buildSchema} = require('graphql');
  var mergeSchema = require('./utils/merge-schemas');
  var acl = null;
@@ -34,6 +35,7 @@ var resolvers = require('./resolvers/index');
  const APP_PORT = 3000;
  const app = express();
 
+app.use(fileUpload());
  /*request is passed as context by default */
  app.use('/graphql', graphqlHTTP((req)=> ({
    schema: Schema,
