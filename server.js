@@ -6,6 +6,8 @@
  var mergeSchema = require('./utils/merge-schemas');
  var acl = null;
 
+ var cors = require('cors');
+
  /* Temporary solution:  acl rules set */
  if(process.argv.length > 2 && process.argv[2]=='acl')
  {
@@ -35,9 +37,25 @@ var resolvers = require('./resolvers/index');
  const APP_PORT = 3000;
  const app = express();
 
+ //app.use((req, res, next)=> {
+
+  // Website you wish to allow to connect
+  //res.setHeader('Access-Control-Allow-Origin', '*');
+  //res.setHeader('Access-Control-Expose-Headers', 'Access-Control-Allow-Origin');
+
+  // Request methods you wish to allow
+  //res.setHeader('Access-Control-Allow-Methods',
+  //  'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  //res.setHeader('Access-Control-Allow-Headers',
+  //  'X-Requested-With,content-type,authorization,Authorization,accept,Accept');
+  //  next();
+  //});
+
 app.use(fileUpload());
  /*request is passed as context by default */
- app.use('/graphql', graphqlHTTP((req)=> ({
+ app.use('/graphql', cors(),graphqlHTTP((req)=> ({
    schema: Schema,
    rootValue: resolvers,
    pretty: true,
@@ -49,6 +67,8 @@ app.use(fileUpload());
  })));
 
 
- app.listen(APP_PORT, ()=>{
+var server = app.listen(APP_PORT, ()=>{
    console.log(`App listening on port ${APP_PORT}`);
  });
+
+module.exports = server;
