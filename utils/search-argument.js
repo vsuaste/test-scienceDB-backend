@@ -2,13 +2,13 @@
   Class to parse search argument for any model
 */
 
-module.exports = class searchArg{
+module.exports = class search{
 
-  constructor({field, value, operator, searchArg}){
+  constructor({field, value, operator, search}){
     this.field = field;
     this.value = this.constructor.parseValue(value);
     this.operator = operator;
-    this.searchArg = searchArg
+    this.search = search
   }
 
   static parseValue(val){
@@ -24,31 +24,31 @@ module.exports = class searchArg{
   }
 
   toSequelize(){
-    let searchArgsInSequelize = {};
+    let searchsInSequelize = {};
 
-    if(this.searchArg === undefined && this.field === undefined)
+    if(this.search === undefined && this.field === undefined)
     {
-      searchArgsInSequelize['$'+this.operator] = this.value;
+      searchsInSequelize['$'+this.operator] = this.value;
 
-    }else if(this.searchArg === undefined)
+    }else if(this.search === undefined)
     {
-      searchArgsInSequelize[this.field] = {
+      searchsInSequelize[this.field] = {
          ['$'+this.operator] : this.value
       };
     }else if(this.field === undefined){
-      searchArgsInSequelize['$'+this.operator] = this.searchArg.map(sa => {
-        let new_sa = new searchArg(sa);
+      searchsInSequelize['$'+this.operator] = this.search.map(sa => {
+        let new_sa = new search(sa);
         return new_sa.toSequelize();
       });
     }else{
-       searchArgsInSequelize[this.field] = {
-         ['$'+this.operator] : this.searchArg.map(sa => {
-           let new_sa = new searchArg(sa);
+       searchsInSequelize[this.field] = {
+         ['$'+this.operator] : this.search.map(sa => {
+           let new_sa = new search(sa);
            return new_sa.toSequelize();
          })
        }
     }
 
-    return searchArgsInSequelize;
+    return searchsInSequelize;
   }
 };
