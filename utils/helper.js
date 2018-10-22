@@ -86,7 +86,6 @@ includeAssociations = function (req) {
 }
 
 searchPaginate = function(req, strAttributes) {
-  console.log("New changes applied including all");
   return objectAssign(
     search(req, strAttributes),
     sort(req),
