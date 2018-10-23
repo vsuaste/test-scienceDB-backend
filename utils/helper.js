@@ -111,7 +111,7 @@ module.exports.vueTable = function(req, model, strAttributes) {
         per_page: req.query.per_page,
         current_page: req.query.page,
         'from': (req.query.page - 1) * req.query.per_page + 1,
-        'to': req.query.page * req.query.per_page,
+        'to': math.min(searchRes, req.query.page * req.query.per_page),
         last_page: lastPage,
         prev_page_url: (req.query.page == 1) ? null : prevNextPageUrl(
           req, true),
