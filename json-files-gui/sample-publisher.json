@@ -1,0 +1,18 @@
+{
+  "model" : "Publisher",
+  "storageType" : "webservice",
+  "attributes" : {
+    "name" : "String",
+    "phone" : "String"
+  },
+  "associations":{
+      "books" : {
+          "type" : "cross_hasMany",
+          "target" : "Book",
+          "targetKey" : "publisherId",
+          "targetStorageType" : "sql",
+          "label": "title",
+          "sublabel": "genre"
+        }
+  }
+}
